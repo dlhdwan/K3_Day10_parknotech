@@ -22,8 +22,7 @@ state = {
     "embeddings_path": settings.paths.embeddings_json,
     "clean_path": settings.paths.clean_json,
     "top_k": 4,
-    "llm_provider": settings.llm_provider,
-    "model_name": settings.model_name,
+    "selected_model_option": "Ollama: qwen2.5 (Local Đa Ngôn Ngữ)",
 }
 
 # Cache index vector
@@ -64,6 +63,7 @@ def get_quality(quality_type: str) -> dict[str, Any]:
     return {}
 
 
+
 # Cấu hình Dark Mode
 ui.dark_mode(True)
 
@@ -73,10 +73,10 @@ with ui.header().classes("bg-slate-900 text-white items-center justify-between p
         ui.icon("analytics", size="32px").classes("text-indigo-400")
         with ui.column().classes("gap-0"):
             ui.label("Hệ Thống Quan Sát Dữ Liệu RAG & Tìm Kiếm Bài Báo Crossref").classes("text-xl font-bold tracking-wide text-slate-100")
-            ui.label("Tra cứu ngữ nghĩa • Giám sát chất lượng & độ tươi dữ liệu • Phân tích phục hồi").classes("text-xs text-slate-400")
+            ui.label("Tra cứu ngữ nghĩa • Qwen2.5 Đa ngôn ngữ • Giám sát chất lượng & độ tươi dữ liệu").classes("text-xs text-slate-400")
     with ui.row().classes("items-center gap-4"):
-        ui.chip("Môi trường: Python 3.12", icon="code").classes("bg-slate-800 text-slate-300 text-xs")
-        ui.chip("Index: ChromaDB + MiniLM", icon="dataset").classes("bg-indigo-950 text-indigo-300 text-xs")
+        ui.chip("Python 3.12", icon="code").classes("bg-slate-800 text-slate-300 text-xs")
+        ui.chip("ChromaDB + MiniLM", icon="dataset").classes("bg-indigo-950 text-indigo-300 text-xs")
 
 # 2. Bảng điều khiển bên trái (Top Level Left Drawer)
 with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 p-4 gap-4 w-80"):
@@ -92,7 +92,16 @@ with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 
     ui.separator().classes("bg-slate-800 my-2")
 
     ui.label("Cấu Hình Mô Hình LLM").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
-    provider_badge = ui.badge(f"Provider: {settings.llm_provider} ({settings.model_name})", color="indigo").classes("w-full py-2 text-center text-xs font-mono")
+    model_select = ui.select(
+        options=[
+            "Ollama: qwen2.5 (Local Đa Ngôn Ngữ)",
+            "OpenAI: gpt-4o-mini (Cloud API)",
+        ],
+        value=state["selected_model_option"],
+        on_change=lambda e: update_model(e.value),
+    ).classes("w-full bg-slate-800 text-slate-100 rounded-lg")
+
+    provider_badge = ui.badge(f"LLM: {settings.llm_provider} ({settings.model_name})", color="indigo").classes("w-full py-2 text-center text-xs font-mono mt-1")
 
     ui.separator().classes("bg-slate-800 my-2")
 
@@ -176,8 +185,8 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
         
         # TAB 1: Tìm Kiếm & Hỏi Đáp RAG
         with ui.tab_panel(tab_chat).classes("gap-6"):
-            ui.label("Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo").classes("text-lg font-bold text-slate-100")
-            ui.label("Nhập câu hỏi để tra cứu thông tin trong tập dữ liệu bài báo Crossref đã index.").classes("text-xs text-slate-400 -mt-4 mb-2")
+            ui.label("Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo (Hỗ Trợ Tiếng Việt - Qwen2.5)").classes("text-lg font-bold text-slate-100")
+            ui.label("Nhập câu hỏi bằng Tiếng Việt hoặc Tiếng Anh để tra cứu thông tin bài báo học thuật Crossref.").classes("text-xs text-slate-400 -mt-4 mb-2")
 
             # Gợi ý câu hỏi mẫu
             with ui.row().classes("items-center gap-2 mb-2 flex-wrap"):
@@ -186,12 +195,12 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                 def set_query(text: str):
                     query_input.value = text
 
-                ui.button("Tóm tắt Agentic RAG", on_click=lambda: set_query("Nội dung tóm tắt chính của bài báo DOI 10.1016/j.artint.2023.103901 là gì?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
+                ui.button("Tóm tắt Agentic RAG (Tiếng Việt)", on_click=lambda: set_query("Hãy tóm tắt nội dung chính của bài báo về Agentic Retrieval-Augmented Generation bằng Tiếng Việt")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
                 ui.button("Danh sách Tác giả", on_click=lambda: set_query("Ai là tác giả của bài báo có tiêu đề 'Agentic Retrieval-Augmented Generation'")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
                 ui.button("Ngày Xuất bản", on_click=lambda: set_query("Bài báo có tiêu đề 'Agentic Retrieval-Augmented Generation' được xuất bản vào ngày nào?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
 
             with ui.row().classes("w-full gap-3 items-center"):
-                query_input = ui.input(placeholder="Nhập câu hỏi tra cứu về các bài báo học thuật Crossref...").classes("flex-1 bg-slate-800 rounded-lg px-4 text-slate-100")
+                query_input = ui.input(placeholder="Nhập câu hỏi tra cứu về các bài báo học thuật (Tiếng Việt hoặc Tiếng Anh)...").classes("flex-1 bg-slate-800 rounded-lg px-4 text-slate-100")
                 search_btn = ui.button("Tìm Kiếm", icon="search").classes("bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg")
 
             # Khu vực hiển thị kết quả
@@ -206,7 +215,7 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                 results_container.clear()
                 with results_container:
                     spinner = ui.spinner("dots", size="lg").classes("self-center my-4 text-indigo-400")
-                    ui.label("Đang truy vấn ngữ cảnh & tạo câu trả lời...").classes("text-xs text-slate-400 self-center")
+                    ui.label("Đang truy vấn ngữ cảnh & tạo câu trả lời với Qwen2.5...").classes("text-xs text-slate-400 self-center")
 
                 idx = get_current_index()
                 if not idx:
@@ -223,9 +232,11 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                 with results_container:
                     # Thẻ Câu Trả Lời RAG
                     with ui.card().classes("w-full bg-slate-850 border border-indigo-900/50 p-4 rounded-xl shadow-lg"):
-                        with ui.row().classes("items-center gap-2 border-b border-slate-800 pb-2 mb-2"):
-                            ui.icon("smart_toy", color="indigo").classes("text-xl")
-                            ui.label("🤖 Câu Trả Lời Của RAG Agent").classes("font-bold text-indigo-300 text-sm")
+                        with ui.row().classes("items-center justify-between border-b border-slate-800 pb-2 mb-2"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.icon("smart_toy", color="indigo").classes("text-xl")
+                                ui.label(f"🤖 Câu Trả Lời Của RAG Agent ({settings.model_name})").classes("font-bold text-indigo-300 text-sm")
+                            ui.chip(settings.llm_provider, color="indigo").classes("text-xs font-mono")
                         ui.markdown(ans_res.answer).classes("text-slate-100 text-sm leading-relaxed")
 
                     # Các Thẻ Tài Liệu Ngữ Cảnh (Retrieved Context Cards)
@@ -369,10 +380,23 @@ def update_state(val: str):
     update_header_cards()
 
 
+def update_model(val: str):
+    state["selected_model_option"] = val
+    if "qwen2.5" in val:
+        settings.llm_provider = "ollama"
+        settings.model_name = "qwen2.5"
+    elif "gpt-4o-mini" in val:
+        settings.llm_provider = "openai"
+        settings.model_name = "gpt-4o-mini"
+    
+    provider_badge.set_text(f"LLM: {settings.llm_provider} ({settings.model_name})")
+    ui.notify(f"Đã chuyển mô hình LLM sang: {settings.llm_provider} ({settings.model_name})", type="positive")
+
+
 # Chạy Ứng Dụng
 if __name__ in {"__main__", "__mp_main__"}:
     ui.run(
-        title="Day 10 - Data Observability RAG Hub (Tiếng Việt)",
+        title="Day 10 - Data Observability RAG Hub (Qwen2.5)",
         port=8080,
         dark=True,
         reload=False,
