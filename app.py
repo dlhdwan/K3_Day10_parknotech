@@ -13,12 +13,12 @@ from observability.quality import build_freshness_report, run_data_quality_check
 from retrieval.index import LocalEmbeddingIndex
 from retrieval.qa import answer_question
 
-# Initialize Settings
+# Khởi tạo Settings
 settings = load_settings()
 
-# State variables
+# Biến trạng thái toàn cục
 state = {
-    "current_index_name": "Baseline (Clean)",
+    "current_index_name": "Baseline (Dữ liệu sạch)",
     "embeddings_path": settings.paths.embeddings_json,
     "clean_path": settings.paths.clean_json,
     "top_k": 4,
@@ -26,7 +26,7 @@ state = {
     "model_name": settings.model_name,
 }
 
-# Cached index
+# Cache index vector
 index_cache: dict[str, LocalEmbeddingIndex] = {}
 
 
@@ -42,9 +42,9 @@ def get_current_index() -> LocalEmbeddingIndex | None:
 
 def get_metrics(metric_type: str) -> dict[str, Any]:
     metric_files = {
-        "Baseline (Clean)": settings.paths.baseline_metrics,
-        "Corrupted (Damaged)": settings.paths.corrupted_metrics,
-        "Repaired (Restored)": settings.paths.repaired_metrics,
+        "Baseline (Dữ liệu sạch)": settings.paths.baseline_metrics,
+        "Corrupted (Dữ liệu lỗi)": settings.paths.corrupted_metrics,
+        "Repaired (Đã phục hồi)": settings.paths.repaired_metrics,
     }
     target_file = metric_files.get(metric_type, settings.paths.baseline_metrics)
     if target_file.exists():
@@ -54,9 +54,9 @@ def get_metrics(metric_type: str) -> dict[str, Any]:
 
 def get_quality(quality_type: str) -> dict[str, Any]:
     quality_files = {
-        "Baseline (Clean)": settings.paths.quality_dir / "baseline_quality.json",
-        "Corrupted (Damaged)": settings.paths.quality_dir / "corrupted_quality.json",
-        "Repaired (Restored)": settings.paths.quality_dir / "repaired_quality.json",
+        "Baseline (Dữ liệu sạch)": settings.paths.quality_dir / "baseline_quality.json",
+        "Corrupted (Dữ liệu lỗi)": settings.paths.quality_dir / "corrupted_quality.json",
+        "Repaired (Đã phục hồi)": settings.paths.quality_dir / "repaired_quality.json",
     }
     target_file = quality_files.get(quality_type, settings.paths.quality_dir / "baseline_quality.json")
     if target_file.exists():
@@ -64,46 +64,46 @@ def get_quality(quality_type: str) -> dict[str, Any]:
     return {}
 
 
-# Configure Dark Mode
+# Cấu hình Dark Mode
 ui.dark_mode(True)
 
-# 1. Top Level Header
+# 1. Header trên cùng (Top Level Header)
 with ui.header().classes("bg-slate-900 text-white items-center justify-between px-6 py-3 border-b border-slate-800 shadow-lg"):
     with ui.row().classes("items-center gap-3"):
         ui.icon("analytics", size="32px").classes("text-indigo-400")
         with ui.column().classes("gap-0"):
-            ui.label("RAG Data Observability & Search Hub").classes("text-xl font-bold tracking-wide text-slate-100")
-            ui.label("Crossref Literature Search • Data Quality • Impact Analysis").classes("text-xs text-slate-400")
+            ui.label("Hệ Thống Quan Sát Dữ Liệu RAG & Tìm Kiếm Bài Báo Crossref").classes("text-xl font-bold tracking-wide text-slate-100")
+            ui.label("Tra cứu ngữ nghĩa • Giám sát chất lượng & độ tươi dữ liệu • Phân tích phục hồi").classes("text-xs text-slate-400")
     with ui.row().classes("items-center gap-4"):
-        ui.chip("Python 3.12", icon="code").classes("bg-slate-800 text-slate-300 text-xs")
-        ui.chip("ChromaDB + MiniLM", icon="dataset").classes("bg-indigo-950 text-indigo-300 text-xs")
+        ui.chip("Môi trường: Python 3.12", icon="code").classes("bg-slate-800 text-slate-300 text-xs")
+        ui.chip("Index: ChromaDB + MiniLM", icon="dataset").classes("bg-indigo-950 text-indigo-300 text-xs")
 
-# 2. Top Level Left Drawer
+# 2. Bảng điều khiển bên trái (Top Level Left Drawer)
 with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 p-4 gap-4 w-80"):
-    ui.label("⚙️ Control Panel").classes("text-lg font-bold text-slate-200 border-b border-slate-800 pb-2 mb-2")
+    ui.label("⚙️ Bảng Điều Khiển").classes("text-lg font-bold text-slate-200 border-b border-slate-800 pb-2 mb-2")
 
-    ui.label("Dataset & Index State").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
+    ui.label("Trạng Thái Dữ Liệu & Index").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     state_select = ui.select(
-        options=["Baseline (Clean)", "Corrupted (Damaged)", "Repaired (Restored)"],
+        options=["Baseline (Dữ liệu sạch)", "Corrupted (Dữ liệu lỗi)", "Repaired (Đã phục hồi)"],
         value=state["current_index_name"],
         on_change=lambda e: update_state(e.value),
     ).classes("w-full bg-slate-800 text-slate-100 rounded-lg")
 
     ui.separator().classes("bg-slate-800 my-2")
 
-    ui.label("LLM Config").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
+    ui.label("Cấu Hình Mô Hình LLM").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     provider_badge = ui.badge(f"Provider: {settings.llm_provider} ({settings.model_name})", color="indigo").classes("w-full py-2 text-center text-xs font-mono")
 
     ui.separator().classes("bg-slate-800 my-2")
 
-    ui.label("Top-K Retrieval").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
+    ui.label("Số Tài Liệu Truy Vấn (Top-K)").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     top_k_slider = ui.slider(min=1, max=5, value=state["top_k"]).classes("w-full")
-    top_k_label = ui.label(f"Top-K Docs: {state['top_k']}").classes("text-xs text-indigo-400 font-mono")
-    top_k_slider.on("change", lambda e: top_k_label.set_text(f"Top-K Docs: {e.value}"))
+    top_k_label = ui.label(f"Top-K Tài Liệu: {state['top_k']}").classes("text-xs text-indigo-400 font-mono")
+    top_k_slider.on("change", lambda e: top_k_label.set_text(f"Top-K Tài Liệu: {e.value}"))
 
     ui.separator().classes("bg-slate-800 my-2")
 
-    ui.label("Data Health Status").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
+    ui.label("Sức Khỏe Dữ Liệu (Health)").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     health_container = ui.column().classes("w-full gap-2")
 
     def refresh_health_badges():
@@ -114,40 +114,40 @@ with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 
         is_passed = quality.get("passed", True)
         with health_container:
             with ui.row().classes("w-full justify-between items-center bg-slate-850 p-2 rounded border border-slate-800"):
-                ui.label("Quality Status:").classes("text-xs text-slate-400")
-                ui.badge("PASSED" if is_passed else "FAILED", color="emerald" if is_passed else "rose").classes("text-xs font-bold")
+                ui.label("Chất lượng (Quality):").classes("text-xs text-slate-400")
+                ui.badge("ĐẠT (PASSED)" if is_passed else "LỖI (FAILED)", color="emerald" if is_passed else "rose").classes("text-xs font-bold")
 
             with ui.row().classes("w-full justify-between items-center bg-slate-850 p-2 rounded border border-slate-800"):
-                ui.label("Hit Rate:").classes("text-xs text-slate-400")
+                ui.label("Tỷ lệ Hit Rate:").classes("text-xs text-slate-400")
                 hit_rate = metrics.get("retrieval_hit_rate", 1.0)
                 ui.label(f"{hit_rate * 100:.1f}%").classes("text-xs font-bold text-indigo-400")
 
             with ui.row().classes("w-full justify-between items-center bg-slate-850 p-2 rounded border border-slate-800"):
-                ui.label("Judge Score:").classes("text-xs text-slate-400")
+                ui.label("Điểm LLM Judge:").classes("text-xs text-slate-400")
                 score = metrics.get("mean_judge_score", 0.0)
                 ui.label(f"{score:.2f} / 5.0").classes("text-xs font-bold text-amber-400")
 
     refresh_health_badges()
 
-# 3. Top Level Main Content Area
+# 3. Khu vực nội dung chính (Top Level Main Content Area)
 with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 gap-6 max-w-7xl mx-auto"):
 
-    # Header Cards Summary
+    # Thẻ tóm tắt chỉ số tổng quan trên cùng
     with ui.row().classes("w-full grid grid-cols-1 md:grid-cols-4 gap-4"):
         with ui.card().classes("bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-md"):
-            ui.label("INDEX STATE").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
-            current_state_label = ui.label(state["current_index_name"]).classes("text-lg font-bold text-indigo-400 mt-1")
+            ui.label("TRẠNG THÁI INDEX").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
+            current_state_label = ui.label(state["current_index_name"]).classes("text-base font-bold text-indigo-400 mt-1")
         
         with ui.card().classes("bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-md"):
-            ui.label("RETRIEVAL HIT RATE").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
+            ui.label("TỶ LỆ HIT RATE").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
             hit_rate_card_label = ui.label("100%").classes("text-2xl font-black text-emerald-400 mt-1")
         
         with ui.card().classes("bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-md"):
-            ui.label("TOKEN F1").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
+            ui.label("ĐIỂM TOKEN F1").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
             f1_card_label = ui.label("0.2858").classes("text-2xl font-black text-cyan-400 mt-1")
         
         with ui.card().classes("bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-md"):
-            ui.label("JUDGE SCORE").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
+            ui.label("ĐIỂM LLM JUDGE").classes("text-xs font-bold text-slate-400 uppercase tracking-wider")
             judge_card_label = ui.label("4.89 / 5.0").classes("text-2xl font-black text-amber-400 mt-1")
 
     def update_header_cards():
@@ -165,71 +165,71 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
 
     update_header_cards()
 
-    # Tabs Navigation
+    # Các Tab Chức Năng
     with ui.tabs().classes("w-full bg-slate-900 rounded-xl border border-slate-800 p-1 text-slate-300") as tabs:
-        tab_chat = ui.tab("💬 RAG Search & QA", icon="search")
-        tab_comparison = ui.tab("📊 Metrics Comparison", icon="table_chart")
-        tab_reports = ui.tab("📑 Observability Reports", icon="article")
-        tab_data = ui.tab("📁 Data Explorer", icon="folder")
+        tab_chat = ui.tab("💬 Tìm Kiếm & Hỏi Đáp RAG", icon="search")
+        tab_comparison = ui.tab("📊 So Sánh Chỉ Số Thực Nghiệm", icon="table_chart")
+        tab_reports = ui.tab("📑 Báo Cáo Quan Sát Dữ Liệu", icon="article")
+        tab_data = ui.tab("📁 Duyệt Dataset Bài Báo", icon="folder")
 
     with ui.tab_panels(tabs, value=tab_chat).classes("w-full bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl"):
         
-        # TAB 1: RAG Interactive Search & QA
+        # TAB 1: Tìm Kiếm & Hỏi Đáp RAG
         with ui.tab_panel(tab_chat).classes("gap-6"):
-            ui.label("Semantic Search & QA Agent").classes("text-lg font-bold text-slate-100")
-            ui.label("Enter a question to search the indexed Crossref literature corpus.").classes("text-xs text-slate-400 -mt-4 mb-2")
+            ui.label("Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo").classes("text-lg font-bold text-slate-100")
+            ui.label("Nhập câu hỏi để tra cứu thông tin trong tập dữ liệu bài báo Crossref đã index.").classes("text-xs text-slate-400 -mt-4 mb-2")
 
-            # Sample Query Chips
+            # Gợi ý câu hỏi mẫu
             with ui.row().classes("items-center gap-2 mb-2 flex-wrap"):
-                ui.label("Sample Queries:").classes("text-xs text-slate-400 font-semibold")
+                ui.label("Câu hỏi mẫu:").classes("text-xs text-slate-400 font-semibold")
                 
                 def set_query(text: str):
                     query_input.value = text
 
-                ui.button("Agentic RAG", on_click=lambda: set_query("What is the main summary of paper DOI 10.1016/j.artint.2023.103901?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
-                ui.button("List Authors", on_click=lambda: set_query("Who are the authors of the paper titled 'Agentic Retrieval-Augmented Generation'")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
-                ui.button("Publication Date", on_click=lambda: set_query("When was the paper titled 'Agentic Retrieval-Augmented Generation' published?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
+                ui.button("Tóm tắt Agentic RAG", on_click=lambda: set_query("Nội dung tóm tắt chính của bài báo DOI 10.1016/j.artint.2023.103901 là gì?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
+                ui.button("Danh sách Tác giả", on_click=lambda: set_query("Ai là tác giả của bài báo có tiêu đề 'Agentic Retrieval-Augmented Generation'")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
+                ui.button("Ngày Xuất bản", on_click=lambda: set_query("Bài báo có tiêu đề 'Agentic Retrieval-Augmented Generation' được xuất bản vào ngày nào?")).classes("text-xs bg-slate-800 hover:bg-indigo-900 text-slate-300 rounded-full px-3 py-1")
 
             with ui.row().classes("w-full gap-3 items-center"):
-                query_input = ui.input(placeholder="Ask a question about Crossref academic papers...").classes("flex-1 bg-slate-800 rounded-lg px-4 text-slate-100")
-                search_btn = ui.button("Search", icon="search").classes("bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg")
+                query_input = ui.input(placeholder="Nhập câu hỏi tra cứu về các bài báo học thuật Crossref...").classes("flex-1 bg-slate-800 rounded-lg px-4 text-slate-100")
+                search_btn = ui.button("Tìm Kiếm", icon="search").classes("bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-lg")
 
-            # Results Area
+            # Khu vực hiển thị kết quả
             results_container = ui.column().classes("w-full gap-4 mt-4")
 
             async def do_search():
                 q = query_input.value.strip()
                 if not q:
-                    ui.notify("Please enter a question.", type="warning")
+                    ui.notify("Vui lòng nhập câu hỏi tra cứu.", type="warning")
                     return
                 
                 results_container.clear()
                 with results_container:
                     spinner = ui.spinner("dots", size="lg").classes("self-center my-4 text-indigo-400")
-                    ui.label("Retrieving contexts & generating response...").classes("text-xs text-slate-400 self-center")
+                    ui.label("Đang truy vấn ngữ cảnh & tạo câu trả lời...").classes("text-xs text-slate-400 self-center")
 
                 idx = get_current_index()
                 if not idx:
                     results_container.clear()
                     with results_container:
-                        ui.notify("Embedding index file not found.", type="negative")
+                        ui.notify("Không tìm thấy file index vector.", type="negative")
                     return
 
-                # Execute search
+                # Thực hiện truy vấn
                 ans_res = answer_question(q, settings=settings, index=idx, top_k=top_k_slider.value)
                 raw_search_results = idx.search(q, top_k=top_k_slider.value)
 
                 results_container.clear()
                 with results_container:
-                    # RAG Answer Card
+                    # Thẻ Câu Trả Lời RAG
                     with ui.card().classes("w-full bg-slate-850 border border-indigo-900/50 p-4 rounded-xl shadow-lg"):
                         with ui.row().classes("items-center gap-2 border-b border-slate-800 pb-2 mb-2"):
                             ui.icon("smart_toy", color="indigo").classes("text-xl")
-                            ui.label("Agent Response").classes("font-bold text-indigo-300 text-sm")
+                            ui.label("🤖 Câu Trả Lời Của RAG Agent").classes("font-bold text-indigo-300 text-sm")
                         ui.markdown(ans_res.answer).classes("text-slate-100 text-sm leading-relaxed")
 
-                    # Context Cards Section
-                    ui.label(f"Retrieved Document Contexts ({len(raw_search_results)} items)").classes("font-bold text-slate-300 text-sm mt-4")
+                    # Các Thẻ Tài Liệu Ngữ Cảnh (Retrieved Context Cards)
+                    ui.label(f"Tài Liệu Ngữ Cảnh Tìm Được ({len(raw_search_results)} tài liệu)").classes("font-bold text-slate-300 text-sm mt-4")
                     
                     for res in raw_search_results:
                         meta = res.metadata
@@ -239,43 +239,43 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                         with ui.card().classes("w-full bg-slate-800 border border-slate-700/60 p-4 rounded-xl gap-2 hover:border-indigo-500/50 transition-all"):
                             with ui.row().classes("w-full justify-between items-start gap-2"):
                                 ui.label(res.title).classes("font-bold text-slate-100 text-base leading-snug flex-1")
-                                ui.badge(f"{similarity_pct:.1f}% Match", color=score_color).classes("font-mono text-xs px-2 py-1")
+                                ui.badge(f"{similarity_pct:.1f}% Khớp Ngữ Nghĩa", color=score_color).classes("font-mono text-xs px-2 py-1")
 
                             with ui.row().classes("items-center gap-4 text-xs text-slate-400 flex-wrap"):
-                                ui.label(f"DOI: {res.paper_id}").classes("font-mono text-indigo-400")
-                                ui.label(f"Category: {meta.get('primary_category', 'General')}")
-                                ui.label(f"Published: {meta.get('published', 'N/A')}")
-                                ui.label(f"Authors: {meta.get('authors_joined', 'N/A')}")
+                                ui.label(f"Mã DOI: {res.paper_id}").classes("font-mono text-indigo-400")
+                                ui.label(f"Chuyên mục: {meta.get('primary_category', 'Chung')}")
+                                ui.label(f"Ngày xuất bản: {meta.get('published', 'Không rõ')}")
+                                ui.label(f"Tác giả: {meta.get('authors_joined', 'Không rõ')}")
 
-                            ui.markdown(f"**Summary**: {meta.get('summary', '')}").classes("text-xs text-slate-300 bg-slate-850 p-3 rounded-lg border border-slate-750 mt-1")
+                            ui.markdown(f"**Tóm tắt (Abstract)**: {meta.get('summary', '')}").classes("text-xs text-slate-300 bg-slate-850 p-3 rounded-lg border border-slate-750 mt-1")
 
                             if meta.get("abs_url"):
-                                ui.link("🔗 View Source on Crossref", meta["abs_url"], new_tab=True).classes("text-xs text-indigo-400 hover:text-indigo-300 mt-1")
+                                ui.link("🔗 Xem bài báo gốc trên Crossref", meta["abs_url"], new_tab=True).classes("text-xs text-indigo-400 hover:text-indigo-300 mt-1")
 
             search_btn.on("click", do_search)
             query_input.on("keydown.enter", do_search)
 
-        # TAB 2: Metrics Comparison
+        # TAB 2: So Sánh Chỉ Số Thực Nghiệm
         with ui.tab_panel(tab_comparison).classes("gap-6"):
-            ui.label("Baseline vs Corrupted vs Repaired Comparison").classes("text-lg font-bold text-slate-100")
-            ui.label("Empirical metrics measured on the same 18-question evaluation test set.").classes("text-xs text-slate-400 -mt-4 mb-4")
+            ui.label("Bảng So Sánh Hiệu Năng: Baseline vs Corrupted vs Repaired").classes("text-lg font-bold text-slate-100")
+            ui.label("Chỉ số đo đạc thực tế trên cùng một bộ câu hỏi đánh giá (18 câu hỏi).").classes("text-xs text-slate-400 -mt-4 mb-4")
 
-            b_metrics = get_metrics("Baseline (Clean)")
-            c_metrics = get_metrics("Corrupted (Damaged)")
-            r_metrics = get_metrics("Repaired (Restored)")
+            b_metrics = get_metrics("Baseline (Dữ liệu sạch)")
+            c_metrics = get_metrics("Corrupted (Dữ liệu lỗi)")
+            r_metrics = get_metrics("Repaired (Đã phục hồi)")
 
             columns = [
-                {"name": "state", "label": "Pipeline State", "field": "state", "align": "left"},
-                {"name": "samples", "label": "Eval Samples", "field": "samples", "align": "center"},
+                {"name": "state", "label": "Trạng thái Pipeline", "field": "state", "align": "left"},
+                {"name": "samples", "label": "Số câu hỏi Eval", "field": "samples", "align": "center"},
                 {"name": "hit_rate", "label": "Retrieval Hit Rate", "field": "hit_rate", "align": "center"},
                 {"name": "token_f1", "label": "Mean Token F1", "field": "token_f1", "align": "center"},
-                {"name": "judge_accuracy", "label": "Judge Accuracy", "field": "judge_accuracy", "align": "center"},
-                {"name": "judge_score", "label": "Mean Judge Score", "field": "judge_score", "align": "center"},
+                {"name": "judge_accuracy", "label": "Độ chính xác Judge", "field": "judge_accuracy", "align": "center"},
+                {"name": "judge_score", "label": "Điểm Judge trung bình", "field": "judge_score", "align": "center"},
             ]
 
             rows = [
                 {
-                    "state": "Baseline (Clean)",
+                    "state": "Baseline (Dữ liệu sạch)",
                     "samples": b_metrics.get("samples", 18),
                     "hit_rate": f"{b_metrics.get('retrieval_hit_rate', 1.0)*100:.1f}%",
                     "token_f1": f"{b_metrics.get('mean_token_f1', 0.0):.4f}",
@@ -283,7 +283,7 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                     "judge_score": f"{b_metrics.get('mean_judge_score', 0.0):.2f} / 5.0",
                 },
                 {
-                    "state": "Corrupted (Damaged)",
+                    "state": "Corrupted (Dữ liệu lỗi)",
                     "samples": c_metrics.get("samples", 18),
                     "hit_rate": f"{c_metrics.get('retrieval_hit_rate', 0.0)*100:.1f}%",
                     "token_f1": f"{c_metrics.get('mean_token_f1', 0.0):.4f}",
@@ -291,7 +291,7 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                     "judge_score": f"{c_metrics.get('mean_judge_score', 0.0):.2f} / 5.0",
                 },
                 {
-                    "state": "Repaired (Restored)",
+                    "state": "Repaired (Đã phục hồi)",
                     "samples": r_metrics.get("samples", 18),
                     "hit_rate": f"{r_metrics.get('retrieval_hit_rate', 1.0)*100:.1f}%",
                     "token_f1": f"{r_metrics.get('mean_token_f1', 0.0):.4f}",
@@ -302,23 +302,23 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
 
             ui.table(columns=columns, rows=rows, row_key="state").classes("w-full bg-slate-800 text-slate-100 rounded-xl border border-slate-700")
 
-        # TAB 3: Observability Reports Viewer
+        # TAB 3: Báo Cáo Quan Sát Dữ Liệu
         with ui.tab_panel(tab_reports).classes("gap-4"):
-            ui.label("Data Observability & Health Reports").classes("text-lg font-bold text-slate-100")
+            ui.label("Báo Cáo Sức Khỏe Dữ Liệu & Nhật Ký Lỗi").classes("text-lg font-bold text-slate-100")
             
             with ui.row().classes("items-center gap-4 mb-2"):
                 report_select = ui.select(
-                    options=["Phase 1 Baseline Report", "Corruption Comparison Report", "Corruption Log JSON"],
-                    value="Corruption Comparison Report",
+                    options=["Báo Cáo Pha 1 (Baseline)", "Báo Cáo So Sánh Corruption", "Nhật Ký Làm Hỏng Dữ Liệu (JSON)"],
+                    value="Báo Cáo So Sánh Corruption",
                 ).classes("w-80 bg-slate-800 text-slate-100 rounded-lg")
 
             report_viewer = ui.markdown().classes("w-full bg-slate-850 border border-slate-800 p-6 rounded-xl text-slate-200 text-sm leading-relaxed font-mono")
 
             def load_report_content(val: str):
                 report_paths = {
-                    "Phase 1 Baseline Report": settings.paths.baseline_report,
-                    "Corruption Comparison Report": settings.paths.comparison_report,
-                    "Corruption Log JSON": settings.paths.corruption_log,
+                    "Báo Cáo Pha 1 (Baseline)": settings.paths.baseline_report,
+                    "Báo Cáo So Sánh Corruption": settings.paths.comparison_report,
+                    "Nhật Ký Làm Hỏng Dữ Liệu (JSON)": settings.paths.corruption_log,
                 }
                 target_path = report_paths.get(val, settings.paths.comparison_report)
                 if target_path.exists():
@@ -328,29 +328,29 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                         content = target_path.read_text(encoding="utf-8")
                     report_viewer.set_content(content)
                 else:
-                    report_viewer.set_content("*Report file not found on disk.*")
+                    report_viewer.set_content("*Không tìm thấy file báo cáo trên đĩa.*")
 
             report_select.on("change", lambda e: load_report_content(e.value))
-            load_report_content("Corruption Comparison Report")
+            load_report_content("Báo Cáo So Sánh Corruption")
 
-        # TAB 4: Data Explorer
+        # TAB 4: Duyệt Dataset
         with ui.tab_panel(tab_data).classes("gap-4"):
-            ui.label("Crossref Dataset Explorer").classes("text-lg font-bold text-slate-100")
+            ui.label("Duyệt Dữ Liệu Bài Báo Crossref").classes("text-lg font-bold text-slate-100")
             
             def load_dataset_table():
                 clean_path = state["clean_path"]
                 if clean_path.exists():
                     df = pd.read_json(clean_path)
                     data_cols = [
-                        {"name": "paper_id", "label": "DOI / ID", "field": "paper_id", "align": "left"},
-                        {"name": "title", "label": "Title", "field": "title", "align": "left"},
-                        {"name": "published", "label": "Published", "field": "published", "align": "center"},
-                        {"name": "primary_category", "label": "Category", "field": "primary_category", "align": "center"},
+                        {"name": "paper_id", "label": "Mã DOI / ID", "field": "paper_id", "align": "left"},
+                        {"name": "title", "label": "Tiêu đề bài báo", "field": "title", "align": "left"},
+                        {"name": "published", "label": "Ngày xuất bản", "field": "published", "align": "center"},
+                        {"name": "primary_category", "label": "Chuyên mục", "field": "primary_category", "align": "center"},
                     ]
                     data_rows = df.to_dict(orient="records")
                     ui.table(columns=data_cols, rows=data_rows, row_key="paper_id").classes("w-full bg-slate-800 text-slate-100 rounded-xl border border-slate-700")
                 else:
-                    ui.label("Dataset file not found.").classes("text-rose-400")
+                    ui.label("Không tìm thấy file dataset.").classes("text-rose-400")
 
             load_dataset_table()
 
@@ -358,9 +358,9 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
 def update_state(val: str):
     state["current_index_name"] = val
     path_map = {
-        "Baseline (Clean)": (settings.paths.embeddings_json, settings.paths.clean_json),
-        "Corrupted (Damaged)": (settings.paths.corrupted_embeddings_json, settings.paths.corrupted_clean_json),
-        "Repaired (Restored)": (settings.paths.repaired_embeddings_json, settings.paths.repaired_clean_json),
+        "Baseline (Dữ liệu sạch)": (settings.paths.embeddings_json, settings.paths.clean_json),
+        "Corrupted (Dữ liệu lỗi)": (settings.paths.corrupted_embeddings_json, settings.paths.corrupted_clean_json),
+        "Repaired (Đã phục hồi)": (settings.paths.repaired_embeddings_json, settings.paths.repaired_clean_json),
     }
     emb_p, clean_p = path_map.get(val, (settings.paths.embeddings_json, settings.paths.clean_json))
     state["embeddings_path"] = emb_p
@@ -369,10 +369,10 @@ def update_state(val: str):
     update_header_cards()
 
 
-# Run Application
+# Chạy Ứng Dụng
 if __name__ in {"__main__", "__mp_main__"}:
     ui.run(
-        title="Day 10 - Data Observability RAG Hub",
+        title="Day 10 - Data Observability RAG Hub (Tiếng Việt)",
         port=8080,
         dark=True,
         reload=False,
