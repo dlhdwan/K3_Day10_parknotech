@@ -22,8 +22,9 @@ state = {
     "embeddings_path": settings.paths.embeddings_json,
     "clean_path": settings.paths.clean_json,
     "top_k": 4,
-    "selected_model_option": "Ollama: qwen2.5 (Local Đa Ngôn Ngữ)",
+    "selected_model_option": "Ollama: qwen2.5:3b (Local 3B ~1.9GB Đa Ngôn Ngữ)",
 }
+
 
 # Cache index vector
 index_cache: dict[str, LocalEmbeddingIndex] = {}
@@ -94,12 +95,13 @@ with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 
     ui.label("Cấu Hình Mô Hình LLM").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     model_select = ui.select(
         options=[
-            "Ollama: qwen2.5 (Local Đa Ngôn Ngữ)",
+            "Ollama: qwen2.5:3b (Local 3B ~1.9GB Đa Ngôn Ngữ)",
             "OpenAI: gpt-4o-mini (Cloud API)",
         ],
         value=state["selected_model_option"],
         on_change=lambda e: update_model(e.value),
     ).classes("w-full bg-slate-800 text-slate-100 rounded-lg")
+
 
     provider_badge = ui.badge(f"LLM: {settings.llm_provider} ({settings.model_name})", color="indigo").classes("w-full py-2 text-center text-xs font-mono mt-1")
 
@@ -384,13 +386,14 @@ def update_model(val: str):
     state["selected_model_option"] = val
     if "qwen2.5" in val:
         settings.llm_provider = "ollama"
-        settings.model_name = "qwen2.5"
+        settings.model_name = "qwen2.5:3b"
     elif "gpt-4o-mini" in val:
         settings.llm_provider = "openai"
         settings.model_name = "gpt-4o-mini"
     
     provider_badge.set_text(f"LLM: {settings.llm_provider} ({settings.model_name})")
     ui.notify(f"Đã chuyển mô hình LLM sang: {settings.llm_provider} ({settings.model_name})", type="positive")
+
 
 
 # Chạy Ứng Dụng
