@@ -133,4 +133,3 @@ def build_clean_dataframe(records: list[PaperRecord], run_date: datetime) -> pd.
     df = df.sort_values(by="published", ascending=False).reset_index(drop=True)
 
     return df
-
