@@ -73,8 +73,10 @@ def load_settings(project_dir: Path | None = None) -> Settings:
     freshness_threshold_days = 180
     source_from_date = (datetime.now(UTC).date() - timedelta(days=freshness_threshold_days)).isoformat()
 
-    load_dotenv(workspace / ".env")
-    load_dotenv(root / ".env", override=False)
+    load_dotenv(root / ".env", override=True)
+    if (workspace / ".env").exists() and (workspace / ".env") != (root / ".env"):
+        load_dotenv(workspace / ".env", override=False)
+
 
     data_dir = root / "data"
     paths = Paths(

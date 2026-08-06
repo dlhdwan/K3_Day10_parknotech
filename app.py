@@ -22,8 +22,9 @@ state = {
     "embeddings_path": settings.paths.embeddings_json,
     "clean_path": settings.paths.clean_json,
     "top_k": 4,
-    "selected_model_option": f"Ollama: {settings.model_name} (Local)" if settings.llm_provider == "ollama" else f"OpenAI: {settings.model_name} (Cloud API)",
+    "selected_model_option": "Ollama: qwen2.5:3b (Local 3B Đa Ngôn Ngữ)" if settings.llm_provider == "ollama" else f"OpenAI: {settings.model_name} (Cloud API)",
 }
+
 
 
 
@@ -97,12 +98,13 @@ with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 
     ui.label("Cấu Hình Mô Hình LLM").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     model_select = ui.select(
         options=[
-            f"Ollama: {settings.model_name} (Local)",
+            "Ollama: qwen2.5:3b (Local 3B Đa Ngôn Ngữ)",
             "OpenAI: gpt-4o-mini (Cloud API)",
         ],
         value=state["selected_model_option"],
         on_change=lambda e: update_model(e.value),
     ).classes("w-full bg-slate-800 text-slate-100 rounded-lg")
+
 
 
 
@@ -388,20 +390,18 @@ def update_state(val: str):
 
 def update_model(val: str):
     state["selected_model_option"] = val
-    if "Ollama:" in val:
+    if "qwen" in val or "Ollama" in val:
         settings.llm_provider = "ollama"
-        # Extract model name between 'Ollama: ' and ' ('
-        model_part = val.split("Ollama: ")[1].split(" (")[0].strip()
-        settings.model_name = model_part
-    elif "OpenAI:" in val:
+        settings.model_name = "qwen2.5:3b"
+    elif "gpt-4o-mini" in val or "OpenAI" in val:
         settings.llm_provider = "openai"
-        model_part = val.split("OpenAI: ")[1].split(" (")[0].strip()
-        settings.model_name = model_part
+        settings.model_name = "gpt-4o-mini"
     
     header_subtitle.set_text(f"Tra cứu ngữ nghĩa • LLM: {settings.model_name} • Giám sát chất lượng & độ tươi dữ liệu")
     sub_header_label.set_text(f"Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo ({settings.model_name})")
     provider_badge.set_text(f"LLM: {settings.llm_provider} ({settings.model_name})")
     ui.notify(f"Đã chuyển mô hình LLM sang: {settings.llm_provider} ({settings.model_name})", type="positive")
+
 
 
 
