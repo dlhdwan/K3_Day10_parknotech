@@ -71,4 +71,3 @@ Xây dựng một quy trình dữ liệu cho hệ thống RAG có khả năng t�
 
 **Họ và tên:** Triệu Dương  
 **Ngày xác nhận:** 2026-08-06
-

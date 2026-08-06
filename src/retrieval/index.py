@@ -94,14 +94,17 @@ class LocalEmbeddingIndex:
 
         embedding_model = MiniLMEmbeddings(settings.embedding_model)
         client = chromadb.PersistentClient(path=str(persist_path))
+        collection = client.get_or_create_collection(name=collection_name)
+
+
         try:
-            client.delete_collection(name=collection_name)
+            existing_ids = collection.get()["ids"]
+            if existing_ids:
+                collection.delete(ids=existing_ids)
         except Exception:
             pass
-        collection = client.create_collection(
-            name=collection_name,
-            configuration={"hnsw": {"space": "cosine"}},
-        )
+
+
         embeddings = embedding_model.embed_documents([document["content"] for document in documents])
         collection.add(
             ids=[document["record_id"] for document in documents],

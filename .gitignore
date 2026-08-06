@@ -5,3 +5,11 @@ lab.txt
 src/*.egg-info/
 lab/
 **/__pycache__/
+.agents/
+
+# Runtime binary database & cache files
+data/chroma/*
+!data/chroma/.gitkeep
+*.pyc
+.pytest_cache/
+.DS_Store

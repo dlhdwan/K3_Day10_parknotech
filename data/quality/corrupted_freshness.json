@@ -1,0 +1,8 @@
+{
+  "latest_published": "2026-07-10",
+  "oldest_published": "2019-01-01",
+  "stale_rows": 2,
+  "total_rows": 24,
+  "stale_ratio": 0.0833,
+  "is_fresh": true
+}
