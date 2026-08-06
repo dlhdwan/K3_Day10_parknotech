@@ -13,9 +13,9 @@
 
 | STT | Họ và tên | MSSV | Vai trò chính | Module/deliverable sở hữu |
 | --: | --- | --- | --- | --- |
-| 1 | **Đinh Lê Hoàng Danh** | MSSV-01 | Source Ingestion Owner | `src/ingestion/crossref.py` |
+| 1 | **Đinh Lê Hoàng Danh** | 2A202601890 | Source Ingestion Owner | `src/ingestion/crossref.py` |
 | 2 | **Lưu Nhân Triệu Dương** | MSSV-02 | Data Model & Eval Set Owner | `src/ingestion/cleaning.py`, `src/evaluation/testset.py` |
-| 3 | **Đỗ Ngọc Anh** | MSSV-03 | Data Observability Owner | `src/observability/quality.py`, `src/observability/reporting.py` |
+| 3 | **Đỗ Ngọc Anh** | 2A202601343 | Data Observability Owner | `src/observability/quality.py`, `src/observability/reporting.py` |
 | 4 | **Nguyễn Văn Hiếu** | 2A202601831 | Corruption & Integration Owner | `src/ingestion/corruption.py`, `src/pipelines/phase1.py`, `src/pipelines/corruption_flow.py` |
 
 ## 2. Tóm tắt kết quả
