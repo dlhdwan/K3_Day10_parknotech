@@ -18,8 +18,8 @@ def generate_phase1_report(
 ## Source Summary
 
 - Source: {source_summary.get("source")}
-- Query: {source_summary.get("query")}
-- Total Records: {source_summary.get("total_records")}
+- Raw Records: {source_summary.get("raw_count")}
+- Clean Records: {source_summary.get("clean_count")}
 
 ## Evaluation Metrics
 
@@ -55,7 +55,7 @@ def generate_phase1_report(
 
 
 def generate_corruption_report(
-    report_path,
+    report_path: Path,
     baseline_metrics: dict[str, Any],
     corrupted_metrics: dict[str, Any],
     repaired_metrics: dict[str, Any],
@@ -64,5 +64,43 @@ def generate_corruption_report(
     corrupted_freshness: dict[str, Any],
     repaired_freshness: dict[str, Any],
 ) -> None:
-    """TODO(student): viet markdown report so sanh baseline/corrupted/repaired."""
-    raise NotImplementedError("Student task: implement corruption comparison report.")
+    """Generate markdown comparison report for baseline/corrupted/repaired."""
+
+    report = f"""# Corruption Comparison Report
+
+## Evaluation Metrics
+
+| Metric | Baseline | Corrupted | Repaired |
+|--------|----------:|----------:|----------:|
+| Retrieval Hit Rate | {baseline_metrics.get("retrieval_hit_rate")} | {corrupted_metrics.get("retrieval_hit_rate")} | {repaired_metrics.get("retrieval_hit_rate")} |
+| Mean Token F1 | {baseline_metrics.get("mean_token_f1")} | {corrupted_metrics.get("mean_token_f1")} | {repaired_metrics.get("mean_token_f1")} |
+| Judge Accuracy | {baseline_metrics.get("judge_accuracy")} | {corrupted_metrics.get("judge_accuracy")} | {repaired_metrics.get("judge_accuracy")} |
+| Mean Judge Score | {baseline_metrics.get("mean_judge_score")} | {corrupted_metrics.get("mean_judge_score")} | {repaired_metrics.get("mean_judge_score")} |
+
+## Data Quality
+
+| Check | Corrupted | Repaired |
+|-------|----------:|---------:|
+| Row Count | {corrupted_quality.get("row_count")} | {repaired_quality.get("row_count")} |
+| Missing Paper ID | {corrupted_quality.get("paper_id_missing")} | {repaired_quality.get("paper_id_missing")} |
+| Paper ID Unique | {corrupted_quality.get("paper_id_unique")} | {repaired_quality.get("paper_id_unique")} |
+| Missing Title | {corrupted_quality.get("title_missing")} | {repaired_quality.get("title_missing")} |
+| Short Summary | {corrupted_quality.get("short_summary")} | {repaired_quality.get("short_summary")} |
+| Stale Rows | {corrupted_quality.get("stale_rows")} | {repaired_quality.get("stale_rows")} |
+| Passed | {corrupted_quality.get("passed")} | {repaired_quality.get("passed")} |
+
+## Freshness
+
+| Metric | Corrupted | Repaired |
+|--------|----------:|---------:|
+| Latest Published | {corrupted_freshness.get("latest_published")} | {repaired_freshness.get("latest_published")} |
+| Oldest Published | {corrupted_freshness.get("oldest_published")} | {repaired_freshness.get("oldest_published")} |
+| Stale Rows | {corrupted_freshness.get("stale_rows")} | {repaired_freshness.get("stale_rows")} |
+| Total Rows | {corrupted_freshness.get("total_rows")} | {repaired_freshness.get("total_rows")} |
+| Is Fresh | {corrupted_freshness.get("is_fresh")} | {repaired_freshness.get("is_fresh")} |
+"""
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with report_path.open("w", encoding="utf-8") as f:
+        f.write(report)
