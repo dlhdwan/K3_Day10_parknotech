@@ -25,7 +25,7 @@
     "judge": {
       "score": 3,
       "correct": false,
-      "reasoning": "The model answer provides an accurate opening sentence from the summary, but it is incomplete and misses the core research focus and details of the SafeRAG framework described in the reference answer."
+      "reasoning": "The model answer provides a correct opening statement, but it is incomplete and cuts off the core research focus and details of the SafeRAG framework provided in the reference answer."
     }
   },
   {
@@ -54,7 +54,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead provides a generic summary of the topic."
+      "reasoning": "The model answer fails to provide the authors of the paper and instead provides a summary of the topic."
     }
   },
   {
@@ -83,7 +83,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
+      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
     }
   },
   {
@@ -112,7 +112,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides a summary of the paper instead of identifying its category or subject area as requested by the question."
+      "reasoning": "The model answer provides a summary of the paper's context instead of stating the category or subject area requested by the question."
     }
   },
   {
@@ -141,7 +141,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides the first sentence of the abstract and fails to summarize the main research focus, which is the development and validation of the JADE-Plus multimodal agentic RAG framework for jawbone lesion diagnosis."
+      "reasoning": "The model answer only provides the first sentence of the abstract, completely missing the summary and research focus of the paper regarding the JADE-Plus framework."
     }
   },
   {
@@ -170,7 +170,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model failed to provide the authors of the paper and instead outputted a snippet from an abstract."
+      "reasoning": "The model answer completely fails to provide the authors of the paper and instead outputs an irrelevant sentence about diagnosing jawbone lesions."
     }
   },
   {
@@ -199,7 +199,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
+      "reasoning": "The model answer correctly provides the exact publication date matching the reference answer."
     }
   },
   {
@@ -228,7 +228,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is an irrelevant abstract excerpt and completely fails to state the category or subject area of the paper."
+      "reasoning": "The model answer is an irrelevant snippet from an abstract and completely fails to identify the category or subject area of the paper as requested."
     }
   },
   {
@@ -257,7 +257,7 @@
     "judge": {
       "score": 3,
       "correct": false,
-      "reasoning": "The model answer only provides the opening sentence of the abstract, missing the core methodology, experiments, and conclusions that define the full research focus and summary."
+      "reasoning": "The model answer only provides the beginning of the abstract (the background context) and misses the core methodology, experiments, and main findings of the paper provided in the reference answer."
     }
   },
   {
@@ -286,7 +286,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an abstract of a paper instead of identifying the authors requested by the question."
+      "reasoning": "The model answer completely failed to provide the authors of the paper and instead provided an excerpt from the abstract."
     }
   },
   {
@@ -315,7 +315,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
+      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
     }
   },
   {
@@ -344,7 +344,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an abstract instead of identifying the category or subject area of the paper."
+      "reasoning": "The model answer provides an abstract instead of identifying the category or subject area as requested by the question and provided in the reference answer."
     }
   },
   {
@@ -373,7 +373,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides a tiny fragment of the background section and fails to summarize the paper's research focus, objectives, methods, results, or conclusions."
+      "reasoning": "The model answer only provides a single sentence from the background section of the reference and fails to summarize the actual research focus, methods, results, or conclusions of the paper."
     }
   },
   {
@@ -431,7 +431,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date matching the reference answer."
+      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
     }
   },
   {
@@ -460,7 +460,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides background information about LLMs in medical education instead of identifying the category or subject area of the paper."
+      "reasoning": "The model answer provides background information about large language models instead of stating the category or subject area of the paper."
     }
   },
   {
@@ -489,7 +489,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is only a brief introductory sentence and fails to provide the main summary or research focus of the paper."
+      "reasoning": "The model answer only provides the opening sentence of the reference text and completely fails to summarize the core research focus of the paper regarding the agentic AI framework for roof design compliance."
     }
   },
   {
@@ -518,7 +518,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer fails to provide the authors of the paper and instead discusses the general background of design review."
+      "reasoning": "The model answer completely misses the authors of the paper and instead provides a general statement about the background of the problem."
     }
   },
   {
@@ -605,7 +605,7 @@
     "judge": {
       "score": 4,
       "correct": true,
-      "reasoning": "The model answer accurately captures the primary context and opening statement of the reference answer regarding the USACE Civil Works R&D mission, although it leaves out some of the trailing details about the R&D programs and information generated."
+      "reasoning": "The model answer correctly identifies the primary context and mission statement from the reference answer, though it leaves out the subsequent details about information generation and the hackathon context."
     }
   },
   {
@@ -663,7 +663,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date of 2026-07-01, matching the reference answer."
+      "reasoning": "The model answer correctly provides the publication date of 2026-07-01, which matches the reference answer."
     }
   },
   {
@@ -692,7 +692,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely unrelated to the question, providing a description of the US Army Corps of Engineers instead of the subject area of the paper."
+      "reasoning": "The model answer is completely unrelated to the question, which asks for the category of a specific Microsoft Azure paper."
     }
   },
   {
@@ -721,7 +721,7 @@
     "judge": {
       "score": 3,
       "correct": true,
-      "reasoning": "The model answer correctly captures the opening statement and primary focus of the paper regarding the shift toward autonomous agentic architectures, but it is incomplete as it misses the broader bibliometric review details, themes, applications, and challenges covered in the reference answer."
+      "reasoning": "The model answer correctly captures the opening statement and core theme of the paper, but it is incomplete as it misses the broader summary details provided in the reference answer."
     }
   },
   {
@@ -750,7 +750,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely misses the question and talks about the evolution of LLMs instead of providing the authors of the specified paper."
+      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses the evolution of large language models."
     }
   },
   {
@@ -779,7 +779,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
+      "reasoning": "The model answer correctly and precisely provides the publication date of the paper, matching the reference answer."
     }
   },
   {
@@ -808,7 +808,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the category or subject area of the paper, discussing the evolution of LLMs instead."
+      "reasoning": "The model answer fails to state the category or subject area of the paper, discussing the evolution of LLMs instead."
     }
   },
   {
@@ -837,7 +837,7 @@
     "judge": {
       "score": 2,
       "correct": false,
-      "reasoning": "The model answer only provides the first sentence of the abstract, failing to summarize the actual research focus and framework (Hi-RAG) presented in the paper."
+      "reasoning": "The model answer only includes the first sentence of the abstract and fails to summarize the actual research focus or the proposed Hi-RAG framework."
     }
   },
   {
@@ -866,7 +866,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides the abstract of the paper instead of naming the authors."
+      "reasoning": "The model answer provides the abstract of a paper instead of identifying the authors."
     }
   },
   {
@@ -895,7 +895,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
+      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
     }
   },
   {
@@ -924,7 +924,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides the abstract of the paper instead of identifying the category or subject area as requested in the question."
+      "reasoning": "The model answer provides the abstract of the paper instead of identifying the category or subject area as requested by the question."
     }
   },
   {
@@ -953,7 +953,7 @@
     "judge": {
       "score": 4,
       "correct": true,
-      "reasoning": "The model answer correctly captures the main research focus of the paper as stated in the reference, although it is less detailed and omits the specific scenarios and conclusions."
+      "reasoning": "The model answer correctly captures the main research focus of the paper as stated in the reference, but provides a more concise summary by only including the opening sentence of the abstract."
     }
   },
   {
@@ -982,7 +982,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses the topic of the article."
+      "reasoning": "The model answer fails to provide the authors of the paper and instead provides a general description of the article's topic."
     }
   },
   {
@@ -1011,7 +1011,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date as 2026-06-15, matching the reference answer."
+      "reasoning": "The model correctly provided the exact publication date matching the reference answer."
     }
   },
   {
@@ -1040,7 +1040,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer does not state the category or subject area of the paper, whereas the reference answer explicitly specifies it belongs to the General categories."
+      "reasoning": "The model answer does not state the category or subject area of the paper as requested in the question, but instead provides a general statement summarizing the topic."
     }
   },
   {
@@ -1067,9 +1067,9 @@
     "retrieval_hit": true,
     "token_f1": 0.2528735632183908,
     "judge": {
-      "score": 3,
+      "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides the beginning of the abstract and fails to summarize the main research focus, methodology, and contributions of the paper as detailed in the reference answer."
+      "reasoning": "Fallback heuristic judge used because the LLM evaluator was unavailable."
     }
   },
   {
@@ -1098,7 +1098,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead provides an excerpt of the abstract."
+      "reasoning": "The model answer provides an abstract of a paper instead of identifying the authors."
     }
   },
   {
@@ -1127,7 +1127,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly and concisely provides the exact publication date mentioned in the reference answer."
+      "reasoning": "The model answer correctly provides the publication date of the paper matching the reference answer."
     }
   },
   {
@@ -1156,7 +1156,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an abstract of the paper rather than identifying its category or subject area as requested by the question."
+      "reasoning": "The model answer provides an abstract of the paper rather than identifying its category or subject area as requested."
     }
   },
   {
@@ -1187,7 +1187,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer discusses bottlenecks in RAG such as latency and cost, but fails to provide any specific recent papers on Large Language Models and Retrieval-Augmented Generation as requested by the question."
+      "reasoning": "The model answer discusses bottlenecks in RAG rather than providing recent papers on Large Language Models and Retrieval-Augmented Generation as requested."
     }
   }
 ]

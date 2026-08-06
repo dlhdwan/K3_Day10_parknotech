@@ -6,10 +6,10 @@
 - **Cleaned Record Count:** 24
 
 ## Evaluation Metrics
-- **Retrieval Hit Rate:** 0.9756
-- **Mean Token F1:** 0.1982
-- **Judge Accuracy:** 0.3171
-- **Mean Judge Score:** 2.2927
+- **Retrieval Hit Rate:** 0.975609756097561
+- **Mean Token F1:** 0.19817431881049716
+- **Judge Accuracy:** 0.34146341463414637
+- **Mean Judge Score:** 2.3902439024390243
 
 ## Data Quality & Observability
 - **Overall Quality Passed:** `True`

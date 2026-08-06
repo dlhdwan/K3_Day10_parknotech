@@ -25,7 +25,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely empty and fails to provide any evaluation or summary regarding the question."
+      "reasoning": "The model answer is empty and fails to provide any evaluation or response to the question."
     }
   },
   {
@@ -83,7 +83,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides the date 2026-06-30, which does not match the reference date of 2026-08-05."
+      "reasoning": "The model answer provides an incorrect publication date (2026-06-30) compared to the reference answer (2026-08-05)."
     }
   },
   {
@@ -112,7 +112,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely empty and failed to provide any information."
+      "reasoning": "The model answer is completely empty and failed to provide any category or subject area."
     }
   },
   {
@@ -141,7 +141,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is truncated, contains only a snippet of an introduction, and completely fails to provide the summary or research focus of the paper."
+      "reasoning": "The model answer is truncated and completely fails to provide the summary or research focus of the paper as requested."
     }
   },
   {
@@ -170,7 +170,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses Large Language Models and clinical settings."
+      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses Large Language Models in general."
     }
   },
   {
@@ -199,7 +199,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an incorrect publication date (2020-01-01) compared to the reference answer (2026-07-13)."
+      "reasoning": "The model answer provides an incorrect publication date (2020-01-01) which does not match the reference answer (2026-07-13)."
     }
   },
   {
@@ -228,7 +228,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely empty and fails to provide the category or subject area of the paper."
+      "reasoning": "The model answer is empty and does not provide any category or subject area for the paper."
     }
   },
   {
@@ -257,7 +257,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely misinterprets the research focus, describing it as about RAG latency and computation cost rather than time-series forecasting and cross-market equity analysis."
+      "reasoning": "The model answer completely misses the paper's focus on financial time-series forecasting and equity analysis, instead incorrectly discussing RAG latency and computation cost."
     }
   },
   {
@@ -286,7 +286,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses an abstract unrelated to the question."
+      "reasoning": "The model answer completely fails to provide the authors of the specified paper, instead talking about a different topic (RAG bottlenecks)."
     }
   },
   {
@@ -315,7 +315,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides the date 2026-06-15, whereas the reference answer states the publication date was 2026-07-10. The dates do not match."
+      "reasoning": "The model answer provides the date '2026-06-15', which does not match the correct publication date of '2026-07-10' provided in the reference answer."
     }
   },
   {
@@ -344,7 +344,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely empty and therefore fails to answer the question."
+      "reasoning": "The model answer is completely empty and fails to provide the requested category or subject area."
     }
   },
   {
@@ -371,7 +371,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides a small snippet of the background section from the reference answer and fails to provide the main summary or research focus of the paper."
+      "reasoning": "The model answer only provides a small snippet of the background from the reference and fails to provide the main summary or research focus of the paper."
     }
   },
   {
@@ -398,7 +398,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely failed to provide the authors of the paper and instead provided unrelated background text."
+      "reasoning": "The model answer provides background information about LLMs in medical education instead of answering the question about the authors of the specified paper."
     }
   },
   {
@@ -425,7 +425,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date mentioned in the reference answer."
+      "reasoning": "The model answer correctly provides the exact publication date matching the reference answer."
     }
   },
   {
@@ -452,7 +452,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides a background statement instead of identifying the category or subject area of the paper."
+      "reasoning": "The model answer fails to identify the category or subject area of the paper, instead providing background text."
     }
   },
   {
@@ -479,7 +479,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer only provides the opening sentence of the reference text and completely fails to summarize the main research focus, which is the proposed agentic AI framework for roof design compliance."
+      "reasoning": "The model answer only provides the opening sentence of the reference text and completely fails to summarize the research focus or the agentic AI system for roof design compliance."
     }
   },
   {
@@ -506,7 +506,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely misses the authors of the paper and instead provides a general statement about the context of the research."
+      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses the general context of building design review."
     }
   },
   {
@@ -533,7 +533,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an incorrect publication date of 2020-01-01, whereas the reference answer states it was published on 2026-07-02."
+      "reasoning": "The model answer provides an incorrect publication date (2020-01-01) compared to the correct reference date (2026-07-02)."
     }
   },
   {
@@ -560,7 +560,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to identify the category or subject area of the paper, instead discussing the background and pressure faced by designers and engineers."
+      "reasoning": "The model answer completely misses the subject area or category of the paper and instead discusses the general pressure faced by designers and engineers."
     }
   },
   {
@@ -589,7 +589,7 @@
     "judge": {
       "score": 4,
       "correct": true,
-      "reasoning": "The model answer correctly captures the main summary/research focus of the paper regarding the USACE Civil Works R&D mission, although it omits some details about the subsequent hackathon and R&D programs mentioned in the reference."
+      "reasoning": "The model answer accurately captures the primary context and opening focus of the paper regarding the USACE Civil Works R&D mission, although it omits the subsequent details about the hackathon and R&D programs."
     }
   },
   {
@@ -647,7 +647,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides a publication date of 2020-01-01, which is incorrect and does not match the reference answer of 2026-07-01."
+      "reasoning": "The model answer provides the date '2020-01-01', which is incorrect and does not match the reference publication date of '2026-07-01'."
     }
   },
   {
@@ -676,7 +676,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely irrelevant and does not address the question about the category of the specified paper."
+      "reasoning": "The model answer is completely unrelated to the paper title provided and does not address the category or subject area as requested in the reference answer."
     }
   },
   {
@@ -705,7 +705,7 @@
     "judge": {
       "score": 3,
       "correct": true,
-      "reasoning": "The model answer correctly captures the opening statement and core theme of the paper, but it is incomplete as it misses the broader summary details provided in the reference answer."
+      "reasoning": "The model answer correctly identifies the main opening premise of the paper's focus, but it is incomplete as a comprehensive summary of the entire reference text."
     }
   },
   {
@@ -734,7 +734,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses the evolution of large language models."
+      "reasoning": "The model answer completely fails to provide the authors of the paper and instead discusses the general evolution of large language models."
     }
   },
   {
@@ -763,7 +763,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the exact publication date specified in the reference answer."
+      "reasoning": "The model answer provides the exact publication date matching the reference answer."
     }
   },
   {
@@ -792,7 +792,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer fails to identify the category or subject area of the paper, instead providing a descriptive summary of the topic."
+      "reasoning": "The model answer fails to identify the category or subject area of the paper, discussing the evolution of LLMs instead."
     }
   },
   {
@@ -879,7 +879,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date corresponding to the reference answer."
+      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
     }
   },
   {
@@ -908,7 +908,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is completely empty and therefore fails to provide the requested category."
+      "reasoning": "The model answer is completely empty and failed to provide any information regarding the category or subject area of the paper."
     }
   },
   {
@@ -995,7 +995,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
+      "reasoning": "The model answer correctly provides the publication date matching the reference."
     }
   },
   {
@@ -1053,7 +1053,7 @@
     "judge": {
       "score": 3,
       "correct": false,
-      "reasoning": "The model answer only provides the beginning of the abstract and fails to summarize the main research focus, components, and contributions of the paper as detailed in the reference answer."
+      "reasoning": "The model answer only provides the beginning of the abstract from the reference text, omitting the core research focus, architecture components, and methodology of the paper."
     }
   },
   {
@@ -1111,7 +1111,7 @@
     "judge": {
       "score": 5,
       "correct": true,
-      "reasoning": "The model answer correctly provides the publication date matching the reference answer."
+      "reasoning": "The model answer correctly and concisely provides the exact publication date mentioned in the reference answer."
     }
   },
   {
@@ -1140,7 +1140,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer provides an abstract of the paper rather than identifying its category or subject area as requested by the question."
+      "reasoning": "The model answer provides an abstract of the paper rather than identifying its category or subject area as requested."
     }
   },
   {
@@ -1171,7 +1171,7 @@
     "judge": {
       "score": 1,
       "correct": false,
-      "reasoning": "The model answer is empty and does not provide any recent papers on Large Language Models and Retrieval-Augmented Generation."
+      "reasoning": "The model answer is completely empty and fails to provide any papers."
     }
   }
 ]

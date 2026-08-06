@@ -6,8 +6,8 @@
 |---|---|---|---|---|
 | **Retrieval Hit Rate** | 0.9756 | 0.6829 | 0.9756 | Corrupted Delta: -0.2927 |
 | **Mean Token F1** | 0.1982 | 0.0981 | 0.1982 | Corrupted Delta: -0.1001 |
-| **Judge Accuracy** | 0.3171 | 0.1707 | 0.3171 | Corrupted Delta: -0.1463 |
-| **Mean Judge Score** | 2.2927 | 1.6585 | 2.3415 | Corrupted Delta: -0.6341 |
+| **Judge Accuracy** | 0.3415 | 0.1707 | 0.3171 | Corrupted Delta: -0.1707 |
+| **Mean Judge Score** | 2.3902 | 1.6585 | 2.2927 | Corrupted Delta: -0.7317 |
 
 ## Data Quality & Observability Comparison
 - **Corrupted Quality Passed:** `False`

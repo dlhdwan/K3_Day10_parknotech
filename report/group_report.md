@@ -22,9 +22,9 @@
 
 **Tóm tắt của nhóm:**
 
-Nhóm ParkNoTech đã hoàn thành trọn vẹn toàn bộ 2 pha của dự án Data Observability & RAG Pipeline. Ở Pha 1 (Baseline), hệ thống đã ingest 24 bài báo khoa học từ Crossref REST API, thực hiện làm sạch dữ liệu, xây dựng Chroma Vector Index với mô hình embedding BAAI/bge-m3 (hoặc sentence-transformers), tạo bộ kiểm thử cố định 41 câu hỏi (`test_set.json`), đạt chỉ số Retrieval Hit Rate **97.56%** và Mean Judge Score **2.29/5.0**, mọi tiêu chí Data Quality và Freshness đều đạt trạng thái PASS.
+Nhóm ParkNoTech đã hoàn thành trọn vẹn toàn bộ 2 pha của dự án Data Observability & RAG Pipeline. Ở Pha 1 (Baseline), hệ thống đã ingest 24 bài báo khoa học từ Crossref REST API, thực hiện làm sạch dữ liệu, xây dựng Chroma Vector Index với mô hình embedding BAAI/bge-m3 (hoặc sentence-transformers), tạo bộ kiểm thử cố định 41 câu hỏi (`test_set.json`), đạt chỉ số Retrieval Hit Rate **97.56%**, Judge Accuracy **34.15%** và Mean Judge Score **2.39/5.0**, mọi tiêu chí Data Quality và Freshness đều đạt trạng thái PASS.
 
-Ở Pha 2 (Corruption & Repair), nhóm đã giả lập 7 dạng suy biến dữ liệu thực tế (rỗng summary, cắt ngắn tiêu đề, inject từ nhiễu, làm cũ ngày xuất bản, nhân bản dữ liệu). Kết quả ghi nhận chỉ số Retrieval Hit Rate sụt giảm nghiêm trọng xuống còn **68.29%** (giảm 29.27%), điểm Judge giảm xuống **1.65/5.0**, đồng thời Data Quality Checks lập tức báo lỗi FAIL. Khi thực hiện quy trình khôi phục (Repair) bằng cách tái dựng ETL từ Raw Snapshot JSON, toàn bộ các chỉ số đã phục hồi 100% về mức Baseline (Hit Rate **97.56%**, Judge Score **2.34/5.0**, Quality PASS).
+Ở Pha 2 (Corruption & Repair), nhóm đã giả lập 7 dạng suy biến dữ liệu thực tế (rỗng summary, cắt ngắn tiêu đề, inject từ nhiễu, làm cũ ngày xuất bản, nhân bản dữ liệu). Kết quả ghi nhận chỉ số Retrieval Hit Rate sụt giảm nghiêm trọng xuống còn **68.29%** (giảm 29.27%), điểm Judge Accuracy sụt giảm còn **17.07%**, Mean Judge Score giảm xuống **1.66/5.0**, đồng thời Data Quality Checks lập tức báo lỗi FAIL. Khi thực hiện quy trình khôi phục (Repair) bằng cách tái dựng ETL từ Raw Snapshot JSON, toàn bộ các chỉ số đã phục hồi hoàn toàn về mức Baseline (Hit Rate **97.56%**, Judge Accuracy **31.71%**, Mean Judge Score **2.29/5.0**, Quality PASS).
 
 ## 3. Kiến trúc và luồng dữ liệu
 
@@ -93,8 +93,8 @@ uv run python script/run_corruption_flow.py
 
 | Lệnh | Trạng thái | Thời điểm chạy gần nhất | Bằng chứng |
 | ----------------- | ----------------------------------------------- | ----------------------------- | ------------------------------------ |
-| Baseline pipeline | Thành công | 2026-08-06 10:32:00 | `data/results/baseline_metrics.json`, `data/reports/phase1_report.md` |
-| Corruption flow | Thành công | 2026-08-06 10:37:00 | `data/results/corrupted_metrics.json`, `data/reports/corruption_report.md` |
+| Baseline pipeline | Thành công | 2026-08-06 10:49:55 | `data/results/baseline_metrics.json`, `data/reports/phase1_report.md` |
+| Corruption flow | Thành công | 2026-08-06 10:54:53 | `data/results/corrupted_metrics.json`, `data/reports/corruption_report.md` |
 
 ## 5. Ingestion, cleaning và data contract
 
@@ -104,7 +104,7 @@ uv run python script/run_corruption_flow.py
 | --------------------------- | ------------------------------------- |
 | Source | Crossref REST API (`https://api.crossref.org/works`) |
 | Query/filter | `query="machine learning"`, `filter="has-abstract:true"` |
-| Thời điểm lấy dữ liệu | 2026-08-06T10:00:00Z |
+| Thời điểm lấy dữ liệu | 2026-08-06T10:48:00Z |
 | Số record nhận được | 24 |
 | Cơ chế retry/backoff | Retry 3 lần với exponential backoff khi gặp lỗi 429/503 |
 
@@ -168,8 +168,8 @@ Việc cố định duy nhất bộ `test_set.json` cho cả 3 trạng thái đ�
 | ---------------------- | --------------: | --------------------------------------- |
 | `retrieval_hit_rate` | **0.9756** | Truy xuất chính xác văn bản cho 97.56% câu hỏi |
 | `mean_token_f1` | **0.1982** | Độ trùng khớp từ ngữ trung bình của câu trả lời |
-| `judge_accuracy` | **0.3171** | Tỷ lệ câu trả lời đạt điểm tối đa từ LLM Judge |
-| `mean_judge_score` | **2.2927** | Điểm số chất lượng trung bình từ LLM Judge (thang 5) |
+| `judge_accuracy` | **0.3415** | Tỷ lệ câu trả lời đạt điểm tối đa từ LLM Judge |
+| `mean_judge_score` | **2.3902** | Điểm số chất lượng trung bình từ LLM Judge (thang 5) |
 
 ## 8. Data quality và freshness
 
@@ -217,10 +217,10 @@ Hệ thống thực hiện Repair bằng cách đọc lại snapshot Raw JSON g�
 
 | Metric/signal | Baseline | Corrupted | Repaired | Thay đổi do corruption | Mức phục hồi | Nhận xét |
 | ------------------------ | -------: | --------: | -------: | -----------------------: | --------------: | ------------ |
-| `retrieval_hit_rate` | 0.9756 | 0.6829 | 0.9756 | -0.2927 (-29.27%) | 100% | Lỗi làm rớt mạnh hit rate, phục hồi hoàn toàn |
-| `mean_token_f1` | 0.1982 | 0.0981 | 0.1982 | -0.1001 (-10.01%) | 100% | Token F1 giảm 1 nửa khi bị nhiễu |
-| `judge_accuracy` | 0.3171 | 0.1707 | 0.3171 | -0.1463 (-14.63%) | 100% | Điểm đánh giá giảm khi bị lỗi |
-| `mean_judge_score` | 2.2927 | 1.6585 | 2.3415 | -0.6341 | 100% | Phục hồi về mức 2.34/5.0 |
+| `retrieval_hit_rate` | **0.9756** | **0.6829** | **0.9756** | -0.2927 (-29.27%) | 100% | Lỗi làm rớt mạnh hit rate, phục hồi hoàn toàn |
+| `mean_token_f1` | **0.1982** | **0.0981** | **0.1982** | -0.1001 (-10.01%) | 100% | Token F1 giảm 1 nửa khi bị nhiễu |
+| `judge_accuracy` | **0.3415** | **0.1707** | **0.3171** | -0.1708 (-17.08%) | 92.8% | Điểm đánh giá giảm mạnh khi bị lỗi |
+| `mean_judge_score` | **2.3902** | **1.6585** | **2.2927** | -0.7317 | 96% | Phục hồi về mức 2.29/5.0 |
 | Quality checks pass/fail | Passed | Failed | Passed | Chuyển sang Failed | Passed | Cảnh báo dữ liệu hoạt động chính xác |
 | Freshness status | Fresh | Stale (6) | Fresh (0) | 6 dòng bị quá hạn | Fresh | Phục hồi 0 dòng stale |
 

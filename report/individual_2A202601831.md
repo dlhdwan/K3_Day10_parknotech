@@ -27,7 +27,7 @@
 | Hoạt động | Thành viên/module được hỗ trợ | Kết quả |
 | ------------------------------------ | ------------------------------------ | ---------------------------- |
 | Fix JSON serialization bug | Module Data Quality (`quality.py`) | Ép kiểu `int64`/`bool_` sang `int`/`bool` để `json.dump` không bị crash |
-| Cấu hình SSH Git Account 2 | Toàn nhóm | Đổi git remote sang `github.com-acc2` và chạy fetch thành công |
+| Cấu hình SSH Git Account 2 | Toàn nhóm | Đổi git remote sang `github.com-acc2` và chạy fetch/push thành công |
 
 ## 3. Kết quả theo vai trò
 
@@ -105,8 +105,8 @@ uv run python script/run_corruption_flow.py
 | ---------------------- | -------: | --------: | -------: | ------------------------- |
 | `retrieval_hit_rate` | **0.9756** | **0.6829** | **0.9756** | Lỗi làm rớt mạnh hit rate, phục hồi hoàn toàn |
 | `mean_token_f1` | **0.1982** | **0.0981** | **0.1982** | Token F1 giảm 1 nửa khi bị nhiễu |
-| `judge_accuracy` | **0.3171** | **0.1707** | **0.3171** | Điểm đánh giá giảm khi bị lỗi |
-| `mean_judge_score` | **2.2927** | **1.6585** | **2.3415** | Phục hồi về mức 2.34/5.0 |
+| `judge_accuracy` | **0.3415** | **0.1707** | **0.3171** | Điểm đánh giá giảm khi bị lỗi |
+| `mean_judge_score` | **2.3902** | **1.6585** | **2.2927** | Phục hồi về mức 2.29/5.0 |
 | Quality checks | `Passed` | `Failed` | `Passed` | Cảnh báo dữ liệu hoạt động chính xác |
 | Freshness status | `Fresh` | `Stale (6)` | `Fresh (0)` | Phục hồi 0 dòng stale |
 
