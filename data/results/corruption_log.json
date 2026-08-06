@@ -1,0 +1,37 @@
+{
+  "original_record_count": 24,
+  "corrupted_record_count": 24,
+  "total_corruptions": 6,
+  "corruption_details": [
+    {
+      "corruption_type": "drop_latest_records",
+      "description": "Dropped top 3 newest records to simulate missing fresh articles.",
+      "records_affected": 3
+    },
+    {
+      "corruption_type": "blank_summary",
+      "description": "Cleared summary text for 4 records.",
+      "records_affected": 4
+    },
+    {
+      "corruption_type": "inject_noise",
+      "description": "Injected random noise words into summary for 4 records.",
+      "records_affected": 4
+    },
+    {
+      "corruption_type": "truncate_title",
+      "description": "Truncated titles down to <10 characters for 4 records.",
+      "records_affected": 4
+    },
+    {
+      "corruption_type": "make_published_date_stale",
+      "description": "Set publication date to 2020-01-01 (stale > 180 days) for 4 records.",
+      "records_affected": 4
+    },
+    {
+      "corruption_type": "add_duplicate_rows",
+      "description": "Duplicated 3 records to create redundant vector entries.",
+      "records_affected": 3
+    }
+  ]
+}
