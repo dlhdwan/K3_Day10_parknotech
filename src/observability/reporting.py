@@ -1,13 +1,13 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
-
 
 from core.utils import write_text
 
 
 def generate_phase1_report(
-    report_path,
+    report_path: Path,
     source_summary: dict[str, Any],
     metrics: dict[str, Any],
     quality: dict[str, Any],
@@ -18,14 +18,14 @@ def generate_phase1_report(
         "",
         "## Data Ingestion & Source Summary",
         f"- **Source:** {source_summary.get('source', 'Crossref API')}",
-        f"- **Raw Record Count:** {source_summary.get('raw_count', 0)}",
+        f"- **Raw Record Count:** {source_summary.get('raw_count', source_summary.get('total_records', 0))}",
         f"- **Cleaned Record Count:** {source_summary.get('clean_count', 0)}",
         "",
         "## Evaluation Metrics",
-        f"- **Retrieval Hit Rate:** {metrics.get('retrieval_hit_rate', 0.0):.4f}",
-        f"- **Mean Token F1:** {metrics.get('mean_token_f1', 0.0):.4f}",
-        f"- **Judge Accuracy:** {metrics.get('judge_accuracy', 0.0):.4f}",
-        f"- **Mean Judge Score:** {metrics.get('mean_judge_score', 0.0):.4f}",
+        f"- **Retrieval Hit Rate:** {metrics.get('retrieval_hit_rate', 0.0)}",
+        f"- **Mean Token F1:** {metrics.get('mean_token_f1', 0.0)}",
+        f"- **Judge Accuracy:** {metrics.get('judge_accuracy', 0.0)}",
+        f"- **Mean Judge Score:** {metrics.get('mean_judge_score', 0.0)}",
         "",
         "## Data Quality & Observability",
         f"- **Overall Quality Passed:** `{quality.get('passed', False)}`",
@@ -40,6 +40,8 @@ def generate_phase1_report(
         f"- **Stale Row Count:** {freshness.get('stale_rows', 0)}",
         "",
     ]
+    if isinstance(report_path, Path):
+        report_path.parent.mkdir(parents=True, exist_ok=True)
     write_text(report_path, "\n".join(lines))
 
 
@@ -76,5 +78,6 @@ def generate_corruption_report(
         "- **Recovery Verification:** Re-running the ETL pipeline from reliable raw Crossref snapshots successfully restores evaluation scores and quality status back to baseline levels.",
         "",
     ]
+    if hasattr(report_path, "parent"):
+        report_path.parent.mkdir(parents=True, exist_ok=True)
     write_text(report_path, "\n".join(lines))
-
