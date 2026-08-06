@@ -22,8 +22,9 @@ state = {
     "embeddings_path": settings.paths.embeddings_json,
     "clean_path": settings.paths.clean_json,
     "top_k": 4,
-    "selected_model_option": "Ollama: qwen2.5:3b (Local 3B ~1.9GB Đa Ngôn Ngữ)",
+    "selected_model_option": f"Ollama: {settings.model_name} (Local)" if settings.llm_provider == "ollama" else f"OpenAI: {settings.model_name} (Cloud API)",
 }
+
 
 
 # Cache index vector
@@ -74,7 +75,8 @@ with ui.header().classes("bg-slate-900 text-white items-center justify-between p
         ui.icon("analytics", size="32px").classes("text-indigo-400")
         with ui.column().classes("gap-0"):
             ui.label("Hệ Thống Quan Sát Dữ Liệu RAG & Tìm Kiếm Bài Báo Crossref").classes("text-xl font-bold tracking-wide text-slate-100")
-            ui.label("Tra cứu ngữ nghĩa • Qwen2.5 Đa ngôn ngữ • Giám sát chất lượng & độ tươi dữ liệu").classes("text-xs text-slate-400")
+            header_subtitle = ui.label(f"Tra cứu ngữ nghĩa • LLM: {settings.model_name} • Giám sát chất lượng & độ tươi dữ liệu").classes("text-xs text-slate-400")
+
     with ui.row().classes("items-center gap-4"):
         ui.chip("Python 3.12", icon="code").classes("bg-slate-800 text-slate-300 text-xs")
         ui.chip("ChromaDB + MiniLM", icon="dataset").classes("bg-indigo-950 text-indigo-300 text-xs")
@@ -95,12 +97,13 @@ with ui.left_drawer(value=True).classes("bg-slate-900 border-r border-slate-800 
     ui.label("Cấu Hình Mô Hình LLM").classes("text-xs font-semibold uppercase text-slate-400 tracking-wider")
     model_select = ui.select(
         options=[
-            "Ollama: qwen2.5:3b (Local 3B ~1.9GB Đa Ngôn Ngữ)",
+            f"Ollama: {settings.model_name} (Local)",
             "OpenAI: gpt-4o-mini (Cloud API)",
         ],
         value=state["selected_model_option"],
         on_change=lambda e: update_model(e.value),
     ).classes("w-full bg-slate-800 text-slate-100 rounded-lg")
+
 
 
     provider_badge = ui.badge(f"LLM: {settings.llm_provider} ({settings.model_name})", color="indigo").classes("w-full py-2 text-center text-xs font-mono mt-1")
@@ -187,7 +190,7 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
         
         # TAB 1: Tìm Kiếm & Hỏi Đáp RAG
         with ui.tab_panel(tab_chat).classes("gap-6"):
-            ui.label("Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo (Hỗ Trợ Tiếng Việt - Qwen2.5)").classes("text-lg font-bold text-slate-100")
+            sub_header_label = ui.label(f"Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo ({settings.model_name})").classes("text-lg font-bold text-slate-100")
             ui.label("Nhập câu hỏi bằng Tiếng Việt hoặc Tiếng Anh để tra cứu thông tin bài báo học thuật Crossref.").classes("text-xs text-slate-400 -mt-4 mb-2")
 
             # Gợi ý câu hỏi mẫu
@@ -217,7 +220,8 @@ with ui.column().classes("w-full min-h-screen bg-slate-950 text-slate-100 p-6 ga
                 results_container.clear()
                 with results_container:
                     spinner = ui.spinner("dots", size="lg").classes("self-center my-4 text-indigo-400")
-                    ui.label("Đang truy vấn ngữ cảnh & tạo câu trả lời với Qwen2.5...").classes("text-xs text-slate-400 self-center")
+                    ui.label(f"Đang truy vấn ngữ cảnh & tạo câu trả lời với {settings.model_name}...").classes("text-xs text-slate-400 self-center")
+
 
                 idx = get_current_index()
                 if not idx:
@@ -384,15 +388,22 @@ def update_state(val: str):
 
 def update_model(val: str):
     state["selected_model_option"] = val
-    if "qwen2.5" in val:
+    if "Ollama:" in val:
         settings.llm_provider = "ollama"
-        settings.model_name = "qwen2.5:3b"
-    elif "gpt-4o-mini" in val:
+        # Extract model name between 'Ollama: ' and ' ('
+        model_part = val.split("Ollama: ")[1].split(" (")[0].strip()
+        settings.model_name = model_part
+    elif "OpenAI:" in val:
         settings.llm_provider = "openai"
-        settings.model_name = "gpt-4o-mini"
+        model_part = val.split("OpenAI: ")[1].split(" (")[0].strip()
+        settings.model_name = model_part
     
+    header_subtitle.set_text(f"Tra cứu ngữ nghĩa • LLM: {settings.model_name} • Giám sát chất lượng & độ tươi dữ liệu")
+    sub_header_label.set_text(f"Trợ Lý Tìm Kiếm Ngữ Nghĩa & Hỏi Đáp Bài Báo ({settings.model_name})")
     provider_badge.set_text(f"LLM: {settings.llm_provider} ({settings.model_name})")
     ui.notify(f"Đã chuyển mô hình LLM sang: {settings.llm_provider} ({settings.model_name})", type="positive")
+
+
 
 
 
