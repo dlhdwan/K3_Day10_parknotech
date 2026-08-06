@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
-from pathlib import Path
 
 from core.utils import write_text
-
 
 def generate_phase1_report(
     report_path: Path,
@@ -41,13 +39,12 @@ def generate_phase1_report(
         f"- **Stale Row Count:** {freshness.get('stale_rows', 0)}",
         "",
     ]
-    if isinstance(report_path, Path):
-        report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
     write_text(report_path, "\n".join(lines))
 
-
 def generate_corruption_report(
-    report_path,
+    report_path: Path,
     baseline_metrics: dict[str, Any],
     corrupted_metrics: dict[str, Any],
     repaired_metrics: dict[str, Any],
